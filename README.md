@@ -5,9 +5,9 @@ device on your local network (`lala.cgi`, the same endpoint as its web UI) and
 to the **mein-senec.de** cloud.
 
 > [!WARNING]
-> **General Disclaimer:** Please be aware that we are developing this integration
-> to the best of our knowledge and belief, but can't give a guarantee. Therefore,
-> use this integration at your own risk.
+> **General Disclaimer:** This MCP server is developed to the best of our
+> knowledge and belief, but comes without any guarantee. Use it at your own risk,
+> especially when you let an AI agent call its write tools.
 >
 > This is an unofficial project, not affiliated with or endorsed by SENEC GmbH.
 > It relies on undocumented interfaces that may change with any firmware or
