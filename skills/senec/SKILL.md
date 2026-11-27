@@ -31,6 +31,12 @@ FIVE_MINUTES, QUARTER_HOUR, HOUR, DAY, WEEK, MONTH, YEAR; times ISO / now / toda
 yesterday / 6h / 7d / 2w. Use `cloud history` for past energy (kWh) and `status` for
 real-time local values (cloud lags a few minutes).
 
+MCP: the same functionality is available as MCP server `senec-mcp` (tools `status`,
+`battery_info`, `battery_cells`, `pv`, `grid`, `system_info`, `system_temps`, `raw_get`,
+`cloud_*` reads, and writes `safe_charge` / `set_reserve` / `set_peak_shaving`). Write tools
+default to a dry run; only call them with `confirm=true` after the user approved the shown plan.
+Setup login, test charge/discharge and raw writes are CLI-only.
+
 Agent guidance:
 - Errors: exit 1 and `{"error": "..."}`; unapplied write: exit 2 with the plan.
 - Never run `setup test-charge/test-discharge --yes` without explicit user consent (moves real power); prefer `--duration`, and always `setup test-stop` + `setup logout` afterwards.

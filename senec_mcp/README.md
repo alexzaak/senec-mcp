@@ -117,7 +117,9 @@ senec setup test-stop                           # stop (no --yes needed)
 Watts: positive integer, capped at the live hardware limits `FACTORY.MAX_CHARGE_POWER_DC`
 (2500 W) / `MAX_DISCHARGE_POWER_DC` (3750 W). Discharge is refused at/below `--min-soc`
 (default 10 %). Without `--duration` the test runs until `setup test-stop` — the device
-has no timeout. The battery reacts with a delay (~30 s in the live test).
+has no timeout. **Experimental:** the device accepts the test, but a measurable effect on
+battery power could not be confirmed in live tests (see `SENEC.md`). For a proven grid
+charge use `control safe-charge`.
 
 Exit codes: 0 ok, 1 error (JSON `{"error": ...}` with `--json`), 2 write not applied (missing `--yes`).
 
@@ -151,8 +153,13 @@ OpenCode (global `~/.config/opencode/opencode.jsonc`, V2 schema):
 ```jsonc
 "mcp": { "servers": { "senec": {
   "type": "local",
-  "command": ["/path/to/senec-mcp/.venv/bin/senec-mcp"],
-  "environment": { "SENEC_ENV_FILE": "/abs/.env" }
+  "command": ["uvx", "--from", "git+https://github.com/alexzaak/senec-mcp.git", "senec-mcp"],
+  "environment": {
+    "SENEC_LOCAL_HOST": "{env:SENEC_LOCAL_HOST}",
+    "SENEC_CLOUD_URL": "{env:SENEC_CLOUD_URL}",
+    "SENEC_MAIL": "{env:SENEC_MAIL}",
+    "SENEC_PASSWORD": "{env:SENEC_PASSWORD}"
+  }
 } } }
 ```
 

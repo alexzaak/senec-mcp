@@ -126,7 +126,7 @@ whose `*Visible` flags tell which features exist.
 
 | Setting | Read | Write | Validation |
 |---|---|---|---|
-| emergency reserve | `GET /senec/{n}/emergencypower/reserve-in-percent` (plain int) | `POST /senec/{n}/emergencypower?reserve-in-percent=X` | int 0..50 |
+| emergency reserve | `GET /senec/{n}/emergencypower/reserve-in-percent` (plain int) | `POST /senec/{n}/emergencypower?reserve-in-percent=X` | int 0..50 (range taken from the ha-senec-v3 integration, not confirmed by SENEC) |
 | peak shaving | `GET /peakshaving/getSettings?anlageNummer=n` | `POST /peakshaving/saveSettings?anlageNummer=n&mode=&capacityLimit=&endzeit=<ms>` | mode DEACTIVATED/MANUAL/AUTO, 0..100 %, end in future for MANUAL |
 
 Note: the emergency reserve endpoint works although `emergencyPowerVisible=false`.
@@ -191,6 +191,13 @@ Live test (SOC 1 %, state AKKU LEER, 500 W charge, 30 s): device accepted,
 offset −500 W, `GUI_TEST_CHARGE_STAT=1` throughout. Battery stayed 0 W for ~27 s,
 then at 31.6 s state LADEN, battery +767 W (with PV 2432 W). After stop: test off,
 offset 0, battery 66 W → 0 W, state AKKU LEER (normal for 1 % SOC).
+
+Second live test (500 W charge, 300 s, SOC 1–2 %): the device again accepted the test,
+but the grid stayed at ≈ 0 W and the battery only followed PV surplus (+1.5–2 kW),
+later discharging when house load rose to ~5 kW. **No measurable effect of the test
+offset could be confirmed.** Possible causes: sign/semantics of `GRID_POWER_OFFSET`,
+behaviour at very low SOC, or an additional GUI write not yet identified. Treat test
+charge/discharge as experimental; use `control safe-charge` for a proven grid charge.
 
 Also: when the device hands out no `senec-homev3-gui` cookie (stale GUI session),
 `setup login` now sends a logout, waits 5 s and asks again (same as the HA integration).

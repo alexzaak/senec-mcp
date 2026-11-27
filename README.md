@@ -36,6 +36,10 @@ Write tools only return the planned request unless called with `confirm=true`,
 and their descriptions tell the model to ask the user first. Installer-only
 functions (setup login, test charge/discharge, raw writes) are **not** exposed.
 
+Live-tested writes: `safe_charge` on/off (via CLI) and `set_reserve` (rewriting the
+current value). `set_peak_shaving` has only been tested against mocks so far, and the
+0–50 % reserve range comes from the ha-senec-v3 integration, not from SENEC.
+
 ## Configuration
 
 | Variable | Purpose |
@@ -57,10 +61,12 @@ Runs straight from this repo with [uv](https://docs.astral.sh/uv/):
   "type": "local",
   "command": [
     "uvx", "--from",
-    "git+ssh://git@github.com/alexzaak/senec-mcp.git",
+    "git+https://github.com/alexzaak/senec-mcp.git",
     "senec-mcp"
   ],
   "environment": {
+    "SENEC_LOCAL_HOST": "{env:SENEC_LOCAL_HOST}",
+    "SENEC_CLOUD_URL": "{env:SENEC_CLOUD_URL}",
     "SENEC_MAIL": "{env:SENEC_MAIL}",
     "SENEC_PASSWORD": "{env:SENEC_PASSWORD}"
   }
