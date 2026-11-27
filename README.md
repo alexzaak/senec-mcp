@@ -4,6 +4,16 @@ MCP server and CLI for a **SENEC.Home** battery storage system. It talks to the
 device on your local network (`lala.cgi`, the same endpoint as its web UI) and
 to the **mein-senec.de** cloud.
 
+> [!WARNING]
+> **General Disclaimer:** Please be aware that we are developing this integration
+> to the best of our knowledge and belief, but can't give a guarantee. Therefore,
+> use this integration at your own risk.
+>
+> This is an unofficial project, not affiliated with or endorsed by SENEC GmbH.
+> It relies on undocumented interfaces that may change with any firmware or
+> portal update. Write functions change a live energy system; incorrect use can
+> affect battery operation, grid feed-in and warranty.
+
 ## MCP tools
 
 | Kind | Tools |
