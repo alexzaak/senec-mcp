@@ -86,7 +86,7 @@ pass_ctx = click.make_pass_decorator(Ctx)
 
 @click.group(invoke_without_command=True)
 @click.option("--json", "json_mode", is_flag=True, help="Machine-readable JSON output.")
-@click.option("--host", envvar="SENEC_HOST", default=None,
+@click.option("--host", envvar="SENEC_LOCAL_HOST", default=None,
               help="Device URL (overrides session), e.g. https://senec.home.arpa")
 @click.option("--session-file", envvar="SENEC_SESSION", default=None,
               help="Session JSON path (default ~/.senec/session.json).")

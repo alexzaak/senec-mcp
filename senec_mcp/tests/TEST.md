@@ -2,7 +2,7 @@
 
 ## Test Inventory Plan
 - `test_core.py`: ~35 unit tests (synthetic data, no network)
-- `test_full_e2e.py`: ~20 E2E tests against the **real device** (`SENEC_HOST`,
+- `test_full_e2e.py`: ~20 E2E tests against the **real device** (`SENEC_LOCAL_HOST`,
   default `https://senec.home.arpa`) incl. subprocess tests of the installed CLI
 - Refine 1 (cloud): +22 unit tests in `test_core.py`, +21 E2E tests against the real
   mein-senec.de SSO/API in `test_full_e2e.py`

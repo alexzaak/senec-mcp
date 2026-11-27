@@ -1,8 +1,9 @@
 """MCP server (stdio) for SENEC.Home: read tools + a few proven, confirm-gated writes.
 
 Configuration (env):
-  SENEC_HOST                 device URL (overrides session; default https://senec.home.arpa)
-  SENEC_SESSION session JSON (host / verify_tls / timeout / lang / cloud_system)
+  SENEC_LOCAL_HOST           device URL (overrides session; default https://senec.home.arpa)
+  SENEC_CLOUD_URL            mein-senec.de portal URL (default https://mein-senec.de)
+  SENEC_SESSION              session JSON (host / verify_tls / timeout / lang / cloud_system)
   SENEC_ENV_FILE             credentials .env (mein-senec.de) — use an absolute path
   SENEC_USER / SENEC_PASSWORD / SENEC_TOTP_SECRET, SENEC_CLOUD_TOKEN_FILE, SENEC_CLOUD_SYSTEM
 """
@@ -33,7 +34,7 @@ class Config:
     def __init__(self, host=None, env_file=None, session_file=None, token_file=None):
         self.session = Session(session_file or os.environ.get("SENEC_SESSION"))
         cfg = self.session.config
-        h = (host or os.environ.get("SENEC_HOST") or cfg.get("host") or be.DEFAULT_HOST)
+        h = (host or os.environ.get("SENEC_LOCAL_HOST") or cfg.get("host") or be.DEFAULT_HOST)
         h = h.rstrip("/")
         if not h.startswith(("http://", "https://")):
             h = "https://" + h
@@ -291,7 +292,7 @@ def build_server(cfg=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="senec-mcp", description="SENEC MCP server (stdio)")
-    ap.add_argument("--host", default=None, help="Device URL (else SENEC_HOST / session)")
+    ap.add_argument("--host", default=None, help="Device URL (else SENEC_LOCAL_HOST / session)")
     ap.add_argument("--env-file", default=None, help="Credentials .env (else SENEC_ENV_FILE)")
     ap.add_argument("--session-file", default=None)
     ap.add_argument("--token-file", default=None)

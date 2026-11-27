@@ -29,7 +29,7 @@ senec monitor sample -n 60 -i 10 -o log.csv
 senec control safe-charge on --dry-run   # writes need --yes
 senec session set-host https://192.168.1.50 ; session undo
 ```
-Host precedence: `--host` > `$SENEC_HOST` > session (`~/.senec/session.json`,
+Host precedence: `--host` > `$SENEC_LOCAL_HOST` > session (`~/.senec/session.json`,
 override path with `--session-file` / `$SENEC_SESSION`).
 
 ## Cloud (mein-senec.de)
@@ -131,7 +131,7 @@ It calls the core modules directly (no CLI subprocess). Installed by `devbox run
 ```bash
 .venv/bin/senec-mcp [--host URL] [--env-file /abs/path/.env] [--session-file F] [--token-file F]
 ```
-Config: device host `--host` > `$SENEC_HOST` > session > `https://senec.home.arpa`
+Config: device host `--host` > `$SENEC_LOCAL_HOST` > session > `https://senec.home.arpa`
 (self-signed TLS accepted); cloud credentials from env (`SENEC_USER`/`SENEC_MAIL`,
 `SENEC_PASSWORD`, `SENEC_TOTP_SECRET`) or the `.env` given by `--env-file` / `$SENEC_ENV_FILE`
 (use an absolute path, the server may run from any cwd). `$SENEC_CLOUD_SYSTEM` selects a system.

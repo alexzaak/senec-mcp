@@ -6,7 +6,7 @@ description: "Read live data (SOC, PV, grid, battery cells, temps, system info) 
 # senec
 
 Install: `devbox run install`. Device default: `https://senec.home.arpa`
-(override `--host URL` or `$SENEC_HOST`).
+(override `--host URL` or `$SENEC_LOCAL_HOST`).
 
 Always pass `--json` (global, before the subcommand) for machine output.
 

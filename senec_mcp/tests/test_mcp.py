@@ -36,7 +36,7 @@ class FakeWeb:
 
 @pytest.fixture
 def server(tmp_path, monkeypatch):
-    monkeypatch.delenv("SENEC_HOST", raising=False)
+    monkeypatch.delenv("SENEC_LOCAL_HOST", raising=False)
     cfg = mcp_server.Config(host="https://example.invalid",
                             session_file=str(tmp_path / "s.json"))
     web = FakeWeb()
@@ -126,7 +126,7 @@ class TestValidation:
             _call(server[0], "status", {})
 
     def test_host_from_env(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("SENEC_HOST", "senec.local")
+        monkeypatch.setenv("SENEC_LOCAL_HOST", "senec.local")
         cfg = mcp_server.Config(session_file=str(tmp_path / "s.json"))
         assert cfg.conn["host"] == "https://senec.local"
 

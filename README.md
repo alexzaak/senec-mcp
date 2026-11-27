@@ -20,7 +20,8 @@ functions (setup login, test charge/discharge, raw writes) are **not** exposed.
 
 | Variable | Purpose |
 |---|---|
-| `SENEC_HOST` | Device URL, default `https://senec.home.arpa` (self-signed TLS accepted) |
+| `SENEC_LOCAL_HOST` | Device URL, default `https://senec.home.arpa` (self-signed TLS accepted) |
+| `SENEC_CLOUD_URL` | mein-senec.de portal URL, default `https://mein-senec.de` |
 | `SENEC_MAIL` / `SENEC_PASSWORD` | mein-senec.de login, needed for the `cloud_*` and settings tools |
 | `SENEC_CLOUD_SYSTEM` | Optional system ID if the account has several |
 

@@ -366,7 +366,7 @@ def iso_utc(t):
 
 # ── mein-senec.de web portal (session cookie; settings endpoints) ──────
 
-WEB_URL = "https://mein-senec.de"
+WEB_URL = os.environ.get("SENEC_CLOUD_URL", "https://mein-senec.de").rstrip("/")
 WEB_API = WEB_URL + "/endkunde/api"
 
 

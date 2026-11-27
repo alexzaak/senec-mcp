@@ -11,7 +11,7 @@ import pytest
 from senec_mcp.core import device, export, project
 from senec_mcp.utils import senec_backend as be
 
-HOST = os.environ.get("SENEC_HOST", be.DEFAULT_HOST)
+HOST = os.environ.get("SENEC_LOCAL_HOST", be.DEFAULT_HOST)
 CONN = {"host": HOST, "verify": False, "timeout": 15.0}
 
 
@@ -128,7 +128,7 @@ class TestCLISubprocess:
 
     @pytest.fixture(autouse=True)
     def _env(self, tmp_dir):
-        self.env = {**os.environ, "SENEC_HOST": HOST,
+        self.env = {**os.environ, "SENEC_LOCAL_HOST": HOST,
                     "SENEC_SESSION": os.path.join(tmp_dir, "session.json")}
 
     def _run(self, args, check=True):
@@ -286,7 +286,7 @@ class TestCloudCLISubprocess:
 
     @pytest.fixture(autouse=True)
     def _env(self, tmp_dir, cloud_token_file):
-        self.env = {**os.environ, "SENEC_HOST": HOST,
+        self.env = {**os.environ, "SENEC_LOCAL_HOST": HOST,
                     "SENEC_SESSION": os.path.join(tmp_dir, "session.json"),
                     "SENEC_CLOUD_TOKEN_FILE": cloud_token_file}
         self.env.pop("SENEC_USER", None)
