@@ -8,8 +8,8 @@ import sys
 
 import pytest
 
-from cli_anything.senec import mcp_server
-from cli_anything.senec.utils import senec_backend as be
+from senec_mcp import mcp_server
+from senec_mcp.utils import senec_backend as be
 
 EXPECTED = set(mcp_server.READ_TOOLS) | set(mcp_server.WRITE_TOOLS)
 FORBIDDEN_WORDS = ("setup", "login", "test_charge", "test_discharge", "testpower",
@@ -142,9 +142,9 @@ def _server_cmd():
     path = shutil.which("senec-mcp")
     if path:
         return path, []
-    if os.environ.get("CLI_ANYTHING_FORCE_INSTALLED", "").strip() == "1":
+    if os.environ.get("SENEC_FORCE_INSTALLED", "").strip() == "1":
         raise RuntimeError("senec-mcp not found in PATH")
-    return sys.executable, ["-m", "cli_anything.senec.mcp_server"]
+    return sys.executable, ["-m", "senec_mcp.mcp_server"]
 
 
 def test_e2e_stdio_status_and_dry_run():

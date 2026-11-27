@@ -5,14 +5,14 @@ Reverse-engineered from the device's ksetup1.html (setup page, installer only):
          discharge +W/3) and ENERGY.TEST_CHARGE_ENABLE = u8_01 (one request)
   stop:  ENERGY.TEST_CHARGE_ENABLE = u8_00 and GRID_POWER_OFFSET = [fl 0] * 3
   state: ENERGY.GUI_TEST_CHARGE_STAT / GUI_TEST_DISCHARGE_STAT (1 = running)
-The UI only checks "value is a float > 0"; it has no timeout, so the harness adds
+The UI only checks "value is a float > 0"; it has no timeout, so the CLI adds
 hardware caps, a SOC guard and --duration with guaranteed stop.
 """
 
 import time
 
-from cli_anything.senec.core import installer
-from cli_anything.senec.utils import senec_backend as be
+from senec_mcp.core import installer
+from senec_mcp.utils import senec_backend as be
 
 MODES = ("charge", "discharge")
 DEFAULT_MIN_SOC = 10.0

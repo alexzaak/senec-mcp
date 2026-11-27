@@ -5,10 +5,10 @@ import json
 import os
 import time
 
-from cli_anything.senec.utils.senec_backend import DEFAULT_HOST, DEFAULT_TIMEOUT
+from senec_mcp.utils.senec_backend import DEFAULT_HOST, DEFAULT_TIMEOUT
 
 DEFAULT_PATH = os.path.join(
-    os.environ.get("CLI_ANYTHING_SENEC_HOME", os.path.expanduser("~/.cli-anything-senec")),
+    os.environ.get("SENEC_HOME", os.path.expanduser("~/.senec")),
     "session.json",
 )
 MAX_HISTORY = 200

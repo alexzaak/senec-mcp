@@ -1,0 +1,11 @@
+{
+  "packages": ["python@3.12", "uv@latest"],
+  "shell": {
+    "init_hook": ["source .venv/bin/activate 2>/dev/null || true"],
+    "scripts": {
+      "install": "uv pip install -e . pytest",
+      "test": "python -m pytest senec_mcp/ -v --tb=no",
+      "test-installed": "SENEC_FORCE_INSTALLED=1 python -m pytest senec_mcp/ -v -s"
+    }
+  }
+}

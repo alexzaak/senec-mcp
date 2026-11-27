@@ -101,8 +101,8 @@ COOKIE_NAME = "senec-homev3-gui"
 
 
 def cookie_path():
-    return os.environ.get("CLI_ANYTHING_SENEC_COOKIES") or os.path.join(
-        os.environ.get("CLI_ANYTHING_SENEC_HOME", os.path.expanduser("~/.cli-anything-senec")),
+    return os.environ.get("SENEC_COOKIES") or os.path.join(
+        os.environ.get("SENEC_HOME", os.path.expanduser("~/.senec")),
         "device_cookies.json")
 
 

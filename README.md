@@ -36,7 +36,7 @@ Runs straight from this repo with [uv](https://docs.astral.sh/uv/):
   "type": "local",
   "command": [
     "uvx", "--from",
-    "cli-anything-senec[mcp] @ git+ssh://git@github.com/alexzaak/senec-mcp.git#subdirectory=agent-harness",
+    "git+ssh://git@github.com/alexzaak/senec-mcp.git",
     "senec-mcp"
   ],
   "environment": {
@@ -48,14 +48,13 @@ Runs straight from this repo with [uv](https://docs.astral.sh/uv/):
 
 ## CLI and development
 
-The package also ships `cli-anything-senec`, a full CLI (live readings,
+The package also ships `senec`, a full CLI (live readings,
 snapshots, monitoring, cloud history and settings, installer mode).
 
 ```bash
-cd agent-harness
 devbox run install   # creates .venv with CLI + MCP server
 devbox run test      # needs the device and cloud credentials
 ```
 
-Details: [`agent-harness/cli_anything/senec/README.md`](agent-harness/cli_anything/senec/README.md),
-protocol notes in [`agent-harness/SENEC.md`](agent-harness/SENEC.md).
+Details: [`senec_mcp/README.md`](senec_mcp/README.md),
+protocol notes in [`SENEC.md`](SENEC.md).

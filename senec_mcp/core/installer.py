@@ -8,8 +8,8 @@ so success is verified by polling LOG.USER_LEVEL (bound to the GUI cookie).
 import os
 import time
 
-from cli_anything.senec.utils import senec_backend as be
-from cli_anything.senec.utils.senec_cloud import parse_env_file
+from senec_mcp.utils import senec_backend as be
+from senec_mcp.utils.senec_cloud import parse_env_file
 
 USER_KEYS = ("SENEC_INSTALL_USERNAME", "SENEC_INSTALL_USER")
 PASSWORD_KEYS = ("SENEC_INSTALL_PASSWORD",)

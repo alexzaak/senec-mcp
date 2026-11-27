@@ -1,6 +1,6 @@
 """Write operations (guarded). Always build a plan first; apply only when confirmed."""
 
-from cli_anything.senec.utils import senec_backend as be
+from senec_mcp.utils import senec_backend as be
 
 SAFE_CHARGE = {"on": ("ENERGY", "SAFE_CHARGE_FORCE", "u8_01"),
                "off": ("ENERGY", "SAFE_CHARGE_PROHIBIT", "u8_01")}

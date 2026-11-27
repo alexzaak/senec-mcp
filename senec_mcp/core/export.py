@@ -5,7 +5,7 @@ import json
 import os
 import time
 
-from cli_anything.senec.core import device, project
+from senec_mcp.core import device, project
 
 FORMATS = ("json", "csv")
 SAMPLE_FIELDS = ["timestamp", "state_code", "state", "soc_percent", "pv_w", "house_w",

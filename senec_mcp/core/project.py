@@ -1,12 +1,12 @@
-"""Snapshots: the harness's "project" files (captured device state)."""
+"""Snapshots: "project" files (captured device state)."""
 
 import json
 import os
 import time
 
-from cli_anything.senec.core import device
+from senec_mcp.core import device
 
-FORMAT = "cli-anything-senec/snapshot-v1"
+FORMAT = "senec/snapshot-v1"
 DEFAULT_SECTIONS = ["ENERGY", "BMS", "PV1", "PM1OBJ1", "TEMPMEASURE", "FAN_SPEED",
                     "WIZARD", "FACTORY", "SYS_UPDATE", "RTC"]
 

@@ -8,8 +8,8 @@ import sys
 
 import pytest
 
-from cli_anything.senec.core import device, export, project
-from cli_anything.senec.utils import senec_backend as be
+from senec_mcp.core import device, export, project
+from senec_mcp.utils import senec_backend as be
 
 HOST = os.environ.get("SENEC_HOST", be.DEFAULT_HOST)
 CONN = {"host": HOST, "verify": False, "timeout": 15.0}
@@ -23,17 +23,17 @@ def tmp_dir(tmp_path):
 def _resolve_cli(name):
     """Resolve installed CLI command; falls back to python -m for dev.
 
-    Set env CLI_ANYTHING_FORCE_INSTALLED=1 to require the installed command.
+    Set env SENEC_FORCE_INSTALLED=1 to require the installed command.
     """
     import shutil
-    force = os.environ.get("CLI_ANYTHING_FORCE_INSTALLED", "").strip() == "1"
+    force = os.environ.get("SENEC_FORCE_INSTALLED", "").strip() == "1"
     path = shutil.which(name)
     if path:
         print(f"[_resolve_cli] Using installed command: {path}")
         return [path]
     if force:
         raise RuntimeError(f"{name} not found in PATH. Install with: pip install -e .")
-    module = name.replace("cli-anything-", "cli_anything.") + "." + name.split("-")[-1] + "_cli"
+    module = "senec_mcp.cli"
     print(f"[_resolve_cli] Falling back to: {sys.executable} -m {module}")
     return [sys.executable, "-m", module]
 
@@ -124,12 +124,12 @@ class TestSnapshotWorkflow:
 
 
 class TestCLISubprocess:
-    CLI_BASE = _resolve_cli("cli-anything-senec")
+    CLI_BASE = _resolve_cli("senec")
 
     @pytest.fixture(autouse=True)
     def _env(self, tmp_dir):
         self.env = {**os.environ, "SENEC_HOST": HOST,
-                    "CLI_ANYTHING_SENEC_SESSION": os.path.join(tmp_dir, "session.json")}
+                    "SENEC_SESSION": os.path.join(tmp_dir, "session.json")}
 
     def _run(self, args, check=True):
         return subprocess.run(self.CLI_BASE + args, capture_output=True, text=True,
@@ -196,11 +196,11 @@ class TestCLISubprocess:
 
 import datetime as _dt  # noqa: E402
 
-from cli_anything.senec.core import cloud  # noqa: E402
-from cli_anything.senec.utils import senec_cloud as sc  # noqa: E402
+from senec_mcp.core import cloud  # noqa: E402
+from senec_mcp.utils import senec_cloud as sc  # noqa: E402
 
-_HARNESS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-ENV_FILE = os.environ.get("SENEC_ENV_FILE", os.path.join(_HARNESS_DIR, ".env"))
+_REPO_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ENV_FILE = os.environ.get("SENEC_ENV_FILE", os.path.join(_REPO_DIR, ".env"))
 
 
 @pytest.fixture(scope="module")
@@ -282,18 +282,18 @@ class TestCloudLive:
 
 
 class TestCloudCLISubprocess:
-    CLI_BASE = _resolve_cli("cli-anything-senec")
+    CLI_BASE = _resolve_cli("senec")
 
     @pytest.fixture(autouse=True)
     def _env(self, tmp_dir, cloud_token_file):
         self.env = {**os.environ, "SENEC_HOST": HOST,
-                    "CLI_ANYTHING_SENEC_SESSION": os.path.join(tmp_dir, "session.json"),
+                    "SENEC_SESSION": os.path.join(tmp_dir, "session.json"),
                     "SENEC_CLOUD_TOKEN_FILE": cloud_token_file}
         self.env.pop("SENEC_USER", None)
 
     def _run(self, args, check=True):
         return subprocess.run(self.CLI_BASE + args, capture_output=True, text=True,
-                              check=check, env=self.env, cwd=_HARNESS_DIR)
+                              check=check, env=self.env, cwd=_REPO_DIR)
 
     def _json(self, args):
         return json.loads(self._run(["--json"] + args).stdout)
@@ -371,16 +371,16 @@ class TestCloudSettingsLive:
 
 
 class TestCloudSettingsCLI:
-    CLI_BASE = _resolve_cli("cli-anything-senec")
+    CLI_BASE = _resolve_cli("senec")
 
     @pytest.fixture(autouse=True)
     def _env(self, tmp_dir, cloud_token_file):
-        self.env = {**os.environ, "CLI_ANYTHING_SENEC_SESSION": os.path.join(tmp_dir, "s.json"),
+        self.env = {**os.environ, "SENEC_SESSION": os.path.join(tmp_dir, "s.json"),
                     "SENEC_CLOUD_TOKEN_FILE": cloud_token_file}
 
     def _run(self, args):
         return subprocess.run(self.CLI_BASE + ["--json", "cloud"] + args, capture_output=True,
-                              text=True, env=self.env, cwd=_HARNESS_DIR)
+                              text=True, env=self.env, cwd=_REPO_DIR)
 
     def test_list(self):
         r = json.loads(self._run(["settings", "list"]).stdout)
@@ -417,25 +417,25 @@ class TestCloudSettingsCLI:
 # ── installer setup mode (refine 3): login → extra vars visible → logout ──
 
 def _have_install_creds():
-    from cli_anything.senec.core import installer
+    from senec_mcp.core import installer
     cr = installer.resolve_credentials(env_file=ENV_FILE if os.path.exists(ENV_FILE) else None)
     return cr["user"] and cr["password"]
 
 
 class TestSetupModeCLI:
-    CLI_BASE = _resolve_cli("cli-anything-senec")
+    CLI_BASE = _resolve_cli("senec")
 
     @pytest.fixture(autouse=True)
     def _env(self, tmp_dir):
         assert _have_install_creds(), "SENEC_INSTALL_USERNAME/PASSWORD missing in env/.env"
-        self.env = {**os.environ, "CLI_ANYTHING_SENEC_SESSION": os.path.join(tmp_dir, "s.json"),
-                    "CLI_ANYTHING_SENEC_COOKIES": os.path.join(tmp_dir, "cookies.json")}
+        self.env = {**os.environ, "SENEC_SESSION": os.path.join(tmp_dir, "s.json"),
+                    "SENEC_COOKIES": os.path.join(tmp_dir, "cookies.json")}
         yield
         self._run(["setup", "logout"])  # never leave the device in setup mode
 
     def _run(self, args, check=False):
         return subprocess.run(self.CLI_BASE + ["--json"] + args, capture_output=True,
-                              text=True, env=self.env, cwd=_HARNESS_DIR, check=check)
+                              text=True, env=self.env, cwd=_REPO_DIR, check=check)
 
     def _json(self, args):
         r = self._run(args)
@@ -473,21 +473,21 @@ class TestSetupModeCLI:
 
     def test_human_output(self):
         r = subprocess.run(self.CLI_BASE + ["setup", "status"], capture_output=True,
-                           text=True, env=self.env, cwd=_HARNESS_DIR)
+                           text=True, env=self.env, cwd=_REPO_DIR)
         assert r.returncode == 0 and "Setup mode:" in r.stdout
 
 
 # ── installer test charge/discharge (refine 4): guards + stop only, never starts ──
 
 class TestTestPowerCLI:
-    CLI_BASE = _resolve_cli("cli-anything-senec")
+    CLI_BASE = _resolve_cli("senec")
 
     @pytest.fixture(autouse=True, scope="class")
     @classmethod
     def _login(cls, tmp_path_factory):
         d = str(tmp_path_factory.mktemp("tp"))
-        env = {**os.environ, "CLI_ANYTHING_SENEC_SESSION": os.path.join(d, "s.json"),
-               "CLI_ANYTHING_SENEC_COOKIES": os.path.join(d, "cookies.json")}
+        env = {**os.environ, "SENEC_SESSION": os.path.join(d, "s.json"),
+               "SENEC_COOKIES": os.path.join(d, "cookies.json")}
         cls.env = env
         import time as _t
         for _ in range(3):
@@ -503,7 +503,7 @@ class TestTestPowerCLI:
     @classmethod
     def _run(cls, args):
         return subprocess.run(cls.CLI_BASE + ["--json"] + args, capture_output=True,
-                              text=True, env=cls.env, cwd=_HARNESS_DIR)
+                              text=True, env=cls.env, cwd=_REPO_DIR)
 
     def _json(self, args, rc=0):
         r = self._run(args)
@@ -542,9 +542,9 @@ class TestTestPowerCLI:
 
 
 def test_testpower_requires_login(tmp_path):
-    env = {**os.environ, "CLI_ANYTHING_SENEC_COOKIES": str(tmp_path / "none.json"),
-           "CLI_ANYTHING_SENEC_SESSION": str(tmp_path / "s.json")}
-    r = subprocess.run(_resolve_cli("cli-anything-senec") + ["--json", "setup",
+    env = {**os.environ, "SENEC_COOKIES": str(tmp_path / "none.json"),
+           "SENEC_SESSION": str(tmp_path / "s.json")}
+    r = subprocess.run(_resolve_cli("senec") + ["--json", "setup",
                        "test-charge", "500", "--dry-run"], capture_output=True, text=True,
-                       env=env, cwd=_HARNESS_DIR)
+                       env=env, cwd=_REPO_DIR)
     assert r.returncode == 1 and "setup login" in json.loads(r.stdout)["error"]

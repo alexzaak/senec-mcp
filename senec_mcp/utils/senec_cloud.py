@@ -21,7 +21,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from cli_anything.senec.utils.senec_backend import SenecError
+from senec_mcp.utils.senec_backend import SenecError
 
 SSO_URL = "https://sso.senec.com/realms/senec/protocol/openid-connect"
 CLIENT_ID = "endcustomer-app-frontend"
@@ -41,7 +41,7 @@ DEFAULT_TIMEOUT = 20.0
 RESOLUTIONS = ("FIVE_MINUTES", "QUARTER_HOUR", "HOUR", "DAY", "WEEK", "MONTH", "YEAR")
 
 DEFAULT_TOKEN_PATH = os.path.join(
-    os.environ.get("CLI_ANYTHING_SENEC_HOME", os.path.expanduser("~/.cli-anything-senec")),
+    os.environ.get("SENEC_HOME", os.path.expanduser("~/.senec")),
     "cloud_token.json",
 )
 

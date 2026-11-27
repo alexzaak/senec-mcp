@@ -1,8 +1,8 @@
-"""MCP server (stdio) for the SENEC harness: read tools + a few proven, confirm-gated writes.
+"""MCP server (stdio) for SENEC.Home: read tools + a few proven, confirm-gated writes.
 
 Configuration (env):
   SENEC_HOST                 device URL (overrides session; default https://senec.home.arpa)
-  CLI_ANYTHING_SENEC_SESSION session JSON (host / verify_tls / timeout / lang / cloud_system)
+  SENEC_SESSION session JSON (host / verify_tls / timeout / lang / cloud_system)
   SENEC_ENV_FILE             credentials .env (mein-senec.de) — use an absolute path
   SENEC_USER / SENEC_PASSWORD / SENEC_TOTP_SECRET, SENEC_CLOUD_TOKEN_FILE, SENEC_CLOUD_SYSTEM
 """
@@ -13,10 +13,10 @@ import os
 
 from mcp.server.fastmcp import FastMCP
 
-from cli_anything.senec.core import cloud as cloud_core, control as control_core, device
-from cli_anything.senec.core.session import Session
-from cli_anything.senec.utils import senec_backend as be
-from cli_anything.senec.utils import senec_cloud as sc
+from senec_mcp.core import cloud as cloud_core, control as control_core, device
+from senec_mcp.core.session import Session
+from senec_mcp.utils import senec_backend as be
+from senec_mcp.utils import senec_cloud as sc
 
 CONFIRM_NOTE = ("WRITE TOOL. With confirm=false (default) it only returns the planned request "
                 "and changes nothing. Before calling with confirm=true you MUST show the plan "
@@ -31,7 +31,7 @@ WRITE_TOOLS = ("safe_charge", "set_reserve", "set_peak_shaving")
 
 class Config:
     def __init__(self, host=None, env_file=None, session_file=None, token_file=None):
-        self.session = Session(session_file or os.environ.get("CLI_ANYTHING_SENEC_SESSION"))
+        self.session = Session(session_file or os.environ.get("SENEC_SESSION"))
         cfg = self.session.config
         h = (host or os.environ.get("SENEC_HOST") or cfg.get("host") or be.DEFAULT_HOST)
         h = h.rstrip("/")
@@ -168,7 +168,7 @@ def build_server(cfg=None):
     def cloud_history(resolution: str = "HOUR", from_: str = "today", to: str = "now",
                       totals_only: bool = False) -> dict:
         """Energy history from the cloud. resolution: FIVE_MINUTES/QUARTER_HOUR/HOUR/DAY/
-        MONTH/YEAR (see harness); from_/to: ISO, now/today/yesterday or relative (6h, 7d, 2w)."""
+        MONTH/YEAR (see CLI); from_/to: ISO, now/today/yesterday or relative (6h, 7d, 2w)."""
         res = resolution.upper()
         if res not in [r.upper() for r in sc.RESOLUTIONS]:
             raise ValueError(f"resolution must be one of {', '.join(sc.RESOLUTIONS)}")

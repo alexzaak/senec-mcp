@@ -1,4 +1,4 @@
-# SENEC.Home — CLI Harness SOP
+# SENEC.Home — Protocol notes
 
 Target: SENEC.Home battery storage web UI at `https://senec.home.arpa`
 (self-signed TLS, no authentication for read access).
@@ -50,7 +50,7 @@ None shipped. `curl` against `lala.cgi` is the "native CLI".
 
 ## Phase 2 — CLI design
 
-`cli-anything-senec [--host URL] [--json] <group> <cmd>`
+`senec [--host URL] [--json] <group> <cmd>`
 
 | Group | Commands |
 |---|---|
@@ -67,7 +67,7 @@ None shipped. `curl` against `lala.cgi` is the "native CLI".
 | `session` | `show`, `set-host`, `history`, `undo`, `redo` |
 | `repl` | interactive (default) |
 
-State: `~/.cli-anything-senec/session.json` (host, TLS verify, history,
+State: `~/.senec/session.json` (host, TLS verify, history,
 undo/redo stack of config changes), locked writes. Snapshots are the project
 files: JSON with raw + decoded device data.
 
@@ -77,7 +77,7 @@ Preview: not applicable (no visual output; data is numeric).
 
 ### Backend
 mein-senec.de and the SENEC app share a Keycloak SSO (`sso.senec.com`, realm
-`senec`). The harness uses the app's public OIDC client
+`senec`). The tool uses the app's public OIDC client
 (`endcustomer-app-frontend`, redirect `senec-app-auth://keycloak.prod`,
 scope `roles profile meinsenec`) with PKCE S256:
 
@@ -120,7 +120,7 @@ Settings are not in the app API for this account; they live on the legacy
 **mein-senec.de portal** (`/endkunde/api/...`), authenticated by a session cookie:
 `GET https://mein-senec.de` → SSO login form (client `meinsenec-login-portal`) →
 POST username+password → redirects back with cookies. One login per CLI call.
-The portal addresses systems by `anlageNummer` (0-based index); the harness maps the
+The portal addresses systems by `anlageNummer` (0-based index); the tool maps the
 app system's `controlUnitNumber` to it via `getAnlageBasedNavigationViewModel`,
 whose `*Visible` flags tell which features exist.
 
@@ -181,8 +181,8 @@ Mechanism: the test fakes a per-phase offset on the grid meter so the controller
 sees export (charge) or import (discharge). These variables are only visible
 (`VARIABLE_NOT_FOUND` otherwise) with an installer login.
 UI limits: only "valid float > 0" (`lSetupTestPowerError`). No timeout, no stop on
-page unload; stop-on-logout was not verified, so the harness always stops explicitly.
-Harness adds: integer W, cap at live `FACTORY.MAX_CHARGE_POWER_DC` (2500) /
+page unload; stop-on-logout was not verified, so the tool always stops explicitly.
+The CLI adds: integer W, cap at live `FACTORY.MAX_CHARGE_POWER_DC` (2500) /
 `MAX_DISCHARGE_POWER_DC` (3750), SOC guard for discharge (default 10 %), refuse
 switching modes while running, `--duration` with stop in `finally` (also Ctrl-C/errors,
 3 stop retries).

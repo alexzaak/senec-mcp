@@ -6,7 +6,7 @@ import json
 import os
 import re
 
-from cli_anything.senec.utils import senec_cloud as sc
+from senec_mcp.utils import senec_cloud as sc
 
 MEASURE_KEYS = {
     "POWER_GENERATION": "pv_kwh",

@@ -1,4 +1,4 @@
-"""cli-anything-senec: agent-native CLI for the SENEC.Home battery storage web UI."""
+"""senec: agent-native CLI for the SENEC.Home battery storage web UI."""
 
 import json
 import shlex
@@ -7,11 +7,11 @@ import time
 
 import click
 
-from cli_anything.senec import __version__
-from cli_anything.senec.core import cloud as cloud_core, control as control_core, device, export, installer, project, testpower
-from cli_anything.senec.core.session import Session
-from cli_anything.senec.utils import senec_backend as be
-from cli_anything.senec.utils import senec_cloud as sc
+from senec_mcp import __version__
+from senec_mcp.core import cloud as cloud_core, control as control_core, device, export, installer, project, testpower
+from senec_mcp.core.session import Session
+from senec_mcp.utils import senec_backend as be
+from senec_mcp.utils import senec_cloud as sc
 
 
 class Ctx:
@@ -88,8 +88,8 @@ pass_ctx = click.make_pass_decorator(Ctx)
 @click.option("--json", "json_mode", is_flag=True, help="Machine-readable JSON output.")
 @click.option("--host", envvar="SENEC_HOST", default=None,
               help="Device URL (overrides session), e.g. https://senec.home.arpa")
-@click.option("--session-file", envvar="CLI_ANYTHING_SENEC_SESSION", default=None,
-              help="Session JSON path (default ~/.cli-anything-senec/session.json).")
+@click.option("--session-file", envvar="SENEC_SESSION", default=None,
+              help="Session JSON path (default ~/.senec/session.json).")
 @click.version_option(__version__)
 @click.pass_context
 def cli(ctx, json_mode, host, session_file):
@@ -438,7 +438,7 @@ def _cloud_system(ctx):
 
 @cli.group()
 @click.option("--token-file", envvar="SENEC_CLOUD_TOKEN_FILE", default=None,
-              help="Token cache (default ~/.cli-anything-senec/cloud_token.json).")
+              help="Token cache (default ~/.senec/cloud_token.json).")
 @click.option("--env-file", default=None,
               help="Credentials file (default ./.env if present).")
 @click.option("--user", envvar="SENEC_USER", default=None, help="mein-senec.de e-mail.")
@@ -984,7 +984,7 @@ def session_redo(ctx):
 @pass_ctx
 def repl(ctx):
     """Interactive REPL (default when no command is given)."""
-    from cli_anything.senec.utils.repl_skin import ReplSkin
+    from senec_mcp.utils.repl_skin import ReplSkin
 
     skin = ReplSkin("senec", version=__version__)
     skin.print_banner()

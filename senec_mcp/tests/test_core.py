@@ -5,9 +5,9 @@ import os
 
 import pytest
 
-from cli_anything.senec.core import control, device, export, project
-from cli_anything.senec.core.session import Session
-from cli_anything.senec.utils import senec_backend as be
+from senec_mcp.core import control, device, export, project
+from senec_mcp.core.session import Session
+from senec_mcp.utils import senec_backend as be
 
 ENERGY_RAW = {"GUI_BAT_DATA_FUEL_CHARGE": "fl_42480000",  # 50.0
               "GUI_BAT_DATA_POWER": "fl_C47A0000",        # -1000
@@ -290,8 +290,8 @@ class TestSession:
 
 import datetime as dt  # noqa: E402
 
-from cli_anything.senec.core import cloud  # noqa: E402
-from cli_anything.senec.utils import senec_cloud as sc  # noqa: E402
+from senec_mcp.core import cloud  # noqa: E402
+from senec_mcp.utils import senec_cloud as sc  # noqa: E402
 
 SYSTEMS = [{"id": 11, "controlUnitNumber": "S100", "mode": "SLAVE",
             "product": {"name": "P"}, "wallboxIds": []},
@@ -564,13 +564,13 @@ class TestCloudSettings:
 
 # ── installer / setup mode (refine 3) ──
 
-from cli_anything.senec.core import installer  # noqa: E402
+from senec_mcp.core import installer  # noqa: E402
 
 
 @pytest.fixture
 def cookie_file(tmp_dir, monkeypatch):
     path = os.path.join(tmp_dir, "cookies.json")
-    monkeypatch.setenv("CLI_ANYTHING_SENEC_COOKIES", path)
+    monkeypatch.setenv("SENEC_COOKIES", path)
     return path
 
 
@@ -703,7 +703,7 @@ class TestInstaller:
 
 # ── installer test charge / discharge (refine 4) ──
 
-from cli_anything.senec.core import testpower  # noqa: E402
+from senec_mcp.core import testpower  # noqa: E402
 
 LIMITS = {"MAX_CHARGE_POWER_DC": 2500.0, "MAX_DISCHARGE_POWER_DC": 3750.0}
 

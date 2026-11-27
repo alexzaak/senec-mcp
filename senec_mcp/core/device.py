@@ -2,7 +2,7 @@
 
 import time
 
-from cli_anything.senec.utils import senec_backend as be
+from senec_mcp.utils import senec_backend as be
 
 STATUS_VARS = {
     "ENERGY": ["GUI_BAT_DATA_FUEL_CHARGE", "GUI_BAT_DATA_POWER", "GUI_BAT_DATA_VOLTAGE",
