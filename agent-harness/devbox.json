@@ -1,0 +1,11 @@
+{
+  "packages": ["python@3.12", "uv@latest"],
+  "shell": {
+    "init_hook": ["source .venv/bin/activate 2>/dev/null || true"],
+    "scripts": {
+      "install": "uv pip install -e '.[mcp]' pytest",
+      "test": "python -m pytest cli_anything/ -v --tb=no",
+      "test-installed": "CLI_ANYTHING_FORCE_INSTALLED=1 python -m pytest cli_anything/ -v -s"
+    }
+  }
+}
