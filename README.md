@@ -14,6 +14,16 @@ to the **mein-senec.de** cloud.
 > portal update. Write functions change a live energy system; incorrect use can
 > affect battery operation, grid feed-in and warranty.
 
+> [!WARNING]
+> **Tested systems:** So far this MCP server has only been tested with:
+>
+> | System | Battery | Firmware | NPU image | GUI |
+> |---|---|---|---|---|
+> | SENEC.Home V3 hybrid duo | LFP, 2 modules, 10 kWh | 0842 | 2608 | 0973 |
+>
+> Other SENEC models or firmware/NPU versions may expose different variables
+> or behave differently. Verify read values before relying on write tools.
+
 ## MCP tools
 
 | Kind | Tools |
